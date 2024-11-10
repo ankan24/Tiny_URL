@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://imgs.search.brave.com/8B9cZgAa0HdXqygJG8XU6vK7SHRUskHWHswVdNsm18w/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90Mm1p/by5jb20vYXNzZXRz/L2ltYWdlcy9zdmcv/bGluay1pY29uLnN2/Zw">
+    <title>Tiny URL</title>
+</head>
+<style>
+
+* {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #f1f1f1;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            background-color: #333;
+            color: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff4081;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff4081;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff1f63;
+        }
+
+        .result-container {
+            margin-top: 20px;
+        }
+
+        .result-container input[type="text"] {
+            cursor: not-allowed;
+            background-color: #2e2e2e;
+            border: none;
+        }
+    
+</style>
+
+<body>
+    Enter url: <input type="text" id="userUrl"><br>
+    Short url: <input type="text" id="shortUrl"><br>
+    <button id="btn">GetURL</button>
+    <script>
+        let btn=document.querySelector("#btn");
+        let userUrl=document.querySelector("#userUrl");
+        let shortUrl=document.querySelector("#shortUrl");
+
+        btn.addEventListener("click",async()=>{
+            // console.log("call")
+            let urlVal=userUrl.value;
+            let obj={
+                url:urlVal
+            }
+            let res=await fetch("/short-url",{
+                method:"POST",
+                body:JSON.stringify(obj),
+                headers:({"Content-Type":"application/json"})
+            })
+            let data=await res.text();
+            console.log(`http://localhost:8080/short-url/${data}`);
+            shortUrl.value=""
+            shortUrl.value=`http://localhost:8080/short-url/${data}`;
+        })
+    </script>
+</body>
+</html>
